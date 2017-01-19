@@ -1,14 +1,13 @@
 # Prime-numbers
 Some demo prime number methods using elementary Python only.
-## Contains
+## Contains              
+* **primzahl.py**   cli script to invoke prime number methods and display results.
 
-primzahl.py   (this program), primes.py (class definition), primzahl.json for translating
-              program messagges to another language (German contained as an example), primzahlen.zip.
-primzahl.py   cli script to invoke prime number methods and display results
-primes.py     class definition for prime number calculations
-primzahl.json defines translation from English to another language (optional)
-primzahl.zip  file containing prime numbers until about one million (optional). To be placed in the
-              user's hme directory. Will be crated / maintained automatically if absent.
+* **primes.py**     class definition for prime number calculations.
+
+* **primzahl.json** defines message translations from English to another language (optional). If missing, English will be used.
+
+* **primzahl.zip**  file containing prime numbers until about one million (optional). To be placed in the user's home directory. Will be extended automatically based on highest prime number used in the session. Will be created automatically if missing.
 
 ## Features
 * Perform prime factorizations of any integer. Feedback is a list of pairs [p, e] where p is a       prime factor and e its exponent.abs
