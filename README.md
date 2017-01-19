@@ -3,7 +3,7 @@ Some demo prime number methods using elementary pure Python.
 ## Contains              
 * **primzahl.py**   cli script to invoke prime number methods and display results.
 
-* **primes.py**     class definition for prime number calculations.
+* **primes.py**     class definition for prime number calculations. Can be used independently from the rest of the other files. Loading prime numbers is done during import of the file. So the primes array is available on a class basis, i.e. across all created objects. Saving the primes however occurs during deletion of any object. There is a built-in limit of how many primes will be saved to disk. This limit can be modified during object creation.
 
 * **primzahl.json** defines message translations from English to another language (optional). If missing, English will be used.
 
