@@ -20,3 +20,39 @@ Some demo prime number methods using elementary pure Python.
 ## Dependencies
 Runs with Python 2 or 3. When switching back from Python 3 to Python 2 an existing primzahl.zip file must be deleted first, because Python 2 does not support zipfile compression LZMA (which is automatically used if Python 3).
 
+## Example Session
+
+
+    $ python primzahl.py
+    primzahl.json translation does not exist
+    ====== Prime number functions ======
+    Last stored prime: 1000999 (78573)
+    1 = prime factors, 2 = next prime, 3 = next prime twin, q = quit: 1
+    === Find prime factors ===
+     Enter a number or 'q': 478523
+    Factors: [[478523, 1]]
+    
+    Enter a number or 'q': 397397
+    Factors: [[7, 1], [11, 1], [13, 1], [397, 1]]
+    
+    Enter a number or 'q': q
+    1 = prime factors, 2 = next prime, 3 = next prime twin, q = quit: 2
+    === Find the next prime ===
+    ENTER, a number or 'q':
+    Next prime: 397427
+    
+    ENTER, a number or 'q':
+    Next prime: 397429
+    
+    ENTER, a number or 'q': q
+    1 = prime factors, 2 = next prime, 3 = next prime twin, q = quit: 3
+    === Find the next prime twin ===
+    ENTER, a number or 'q': 999999
+    Next prime twin: (1000037, 1000039)
+    
+    ENTER, a number or 'q': q
+    1 = prime factors, 2 = next prime, 3 = next prime twin, q = quit: q
+    
+    $
+
+
