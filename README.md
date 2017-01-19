@@ -1,5 +1,5 @@
 # Prime-numbers
-Some demo prime number methods using elementary Python only.
+Some demo prime number methods using elementary pure Python.
 ## Contains              
 * **primzahl.py**   cli script to invoke prime number methods and display results.
 
@@ -10,7 +10,7 @@ Some demo prime number methods using elementary Python only.
 * **primzahl.zip**  file containing prime numbers until about one million (optional). To be placed in the user's home directory. Will be extended automatically based on highest prime number used in the session. Will be created automatically if missing.
 
 ## Features
-* Perform prime factorizations of any integer. Feedback is a list of pairs [p, e] where p is a       prime factor and e its exponent.abs
+* Perform prime factorizations of any integer. Feedback is a list of pairs [p, e] where p is a prime factor and e its exponent.
 * return the smallest prime greater than a provided integer.
 * return the smallest prime twin grater than a provided number. 
 * automatically stores new calculated prime numbers in an array.array of format "L" (unsigned long)
