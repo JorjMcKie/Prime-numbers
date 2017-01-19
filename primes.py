@@ -26,7 +26,7 @@ class Primes():
     oldlen = len(primes)
 
     def __init__(self, max_primes = 0):
-        if max_primes > 0:
+        if max_primes > 0:              # largest prime we want to store
             self.store_limit = max_primes
             
     def _enlarge(self, zahl):
@@ -48,7 +48,7 @@ class Primes():
     def __del__(self):
         if self.oldlen >= len(self.primes):
             return
-        if len(self.primes) > self.store_limit:
+        if self.primes[-1] > self.store_limit:
             return
         with zipfile.ZipFile(self._primzip, "w", self._ziplevel) as mzip:
             mzip.writestr(self._primedata, self.primes.tostring(), self._ziplevel)
