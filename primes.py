@@ -1,22 +1,22 @@
 # -*- coding: latin-1 -*-
 import os, sys
 import array
-import math
+from math import sqrt
 import zipfile
 
 class Primes():
     _appdata = os.path.expanduser("~")
-    _primedata = "primzahlen.data"
-    _primzip  = os.path.join(_appdata, "primzahlen.zip")
+    _primedata = "primenumbers.data"
+    _primezip  = os.path.join(_appdata, "primenumbers.zip")
     primes = array.array("L")
-    store_limit = 5*10**6
+    store_limit = 5*10**6           # size of largest prime we want to store
     if sys.version_info[0] < 3:
         _ziplevel = zipfile.ZIP_DEFLATED
     else:
         _ziplevel = zipfile.ZIP_LZMA
 
-    if os.path.exists(_primzip):
-        mzip = zipfile.ZipFile(_primzip, "r")
+    if os.path.exists(_primezip):
+        mzip = zipfile.ZipFile(_primezip, "r")
         pzin = mzip.read(_primedata)
         primes.fromstring(pzin)
         mzip.close()
@@ -26,17 +26,19 @@ class Primes():
     oldlen = len(primes)
 
     def __init__(self, max_primes = 0):
-        if max_primes > 0:              # largest prime we want to store
+        """Change maximum prime to be stored to disk."""
+        if max_primes > 0:
             self.store_limit = max_primes
             
     def _enlarge(self, zahl):
-        check = self.primes[-1]
+        """Extend the primes array up to provided parameter."""
+        check = self.primes[-1]        # last stored prime
         while check <= zahl:
-            check += 2
-            i = 1
-            checksq = math.sqrt(check)
+            check += 2                 # stick with odd numbers
+            i = 1                      # forget the 2
+            checksq = sqrt(check)
             newprime = True
-            while i < len(self.primes) and self.primes[i] <= checksq:
+            while self.primes[i] <= checksq:
                 if check % self.primes[i] == 0:
                     newprime = False
                     break
@@ -48,9 +50,9 @@ class Primes():
     def __del__(self):
         if self.oldlen >= len(self.primes):
             return
-        if self.primes[-1] > self.store_limit:
+        if len(self.primes) > self.store_limit:
             return
-        with zipfile.ZipFile(self._primzip, "w", self._ziplevel) as mzip:
+        with zipfile.ZipFile(self._primezip, "w", self._ziplevel) as mzip:
             mzip.writestr(self._primedata, self.primes.tostring(), self._ziplevel)
         mzip.close()
         
@@ -58,11 +60,9 @@ class Primes():
         """Return the prime factors of an integer as a list of lists. Each list consists of a prime factor and its exponent.
         """
         if (type(zahl) is not int) or (zahl < 1):
-            raise ValueError("arg must be a positive integer")
+            raise ValueError("arg must be integer > 0")
         if zahl > self.primes[-1]:
             self._enlarge(zahl)
-        if zahl in self.primes:
-            return [[zahl, 1]]
         x = []
         for n in [p for p in self.primes if zahl % p == 0]:
             i = 0
@@ -75,12 +75,11 @@ class Primes():
         
     def nextprime(self, zahl):
         if type(zahl) is not int:
-            raise ValueError("arg must be an integer")
-        if zahl >= self.primes[-1]:      # larger than what we have so far?
-            p = zahl
-            while zahl >= self.primes[-1]:
-                p += 2
-                self._enlarge(p)
+            raise ValueError("arg must be integer")
+        p = zahl
+        while zahl > self.primes[-1]:      # larger than what we have so far?
+            p += 1000                      # should be enough to have just 1 loop
+            self._enlarge(p)
             
         for p in self.primes:
             if p > zahl:
@@ -88,7 +87,7 @@ class Primes():
         
     def nexttwin(self, zahl):
         if type(zahl) is not int:
-            raise ValueError("arg must be an integer")
+            raise ValueError("arg must be integer")
         start_here = 1
         p = zahl
         while 1:   # look several times if next twin not within know primes
