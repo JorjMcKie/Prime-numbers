@@ -11,13 +11,12 @@ Demo program for some prime number functions.
 
 Consists of
 ------------
-primzahl.py   (this program), primes.py (class definition), primzahl.json for translating
-              program messagges to another language (German contained as an example), primzahlen.zip.
-primzahl.py   cli script to invoke prime number methods and display results
-primes.py     class definition for prime number calculations
-primzahl.json defines translation from English to another language (optional)
-primzahl.zip  file containing prime numbers until about one million (optional). To be placed in the
-              user's hme directory. Will be crated / maintained automatically if absent.
+primzahl.py       (this program), primes.py (class definition), primzahl.json for translating
+                  program messagges to another language (German contained as an example), primzahlen.zip.
+primes.py         class definition for prime number calculations
+primzahl.json     defines translation from English to another language (optional)
+primenumbers.zip  file containing prime numbers until about one million (optional). To be placed in the
+                  user's hme directory. Will be crated / maintained automatically if absent.
 
 Features
 ---------
@@ -41,9 +40,11 @@ xlatefn = __file__[:-2] + "json"
 if os.path.exists(xlatefn):
     xlate = json.loads(open(xlatefn).read())
     def _(s):
-        return xlate[s]
+        if s in xlate.keys():
+            return xlate[s]
+        else:
+            return s
 else:
-    print(xlatefn, "translation does not exist")
     def _(s):
         return s
 
@@ -107,26 +108,60 @@ def nexttwin(zahl):
         answer = ""
     return zahl
     
+def prevprimes(zahl):
+    """Return number of primes less or equal a number."""
+    print(_("=== Count previous primes ==="))
+    answer = ""
+    while answer != 'q':
+        print(_("Enter a number or 'q'"), end = ": ")
+        answer = lies()
+        if answer == "q": break
+        if answer != "":
+            print(pz.prev_primes(float(answer)))
+        answer = ""
+    return
+    
+def prevtwins(zahl):
+    """Return the smallest prime twin following a given number."""
+    print(_("=== Count previous prime twins ==="))
+    answer = ""
+    while answer != 'q':
+        print(_("Enter a number or 'q'"), end = ": ")
+        answer = lies()
+        if answer == "q": break
+        if answer != "":
+            print(pz.prev_twins(float(answer)))
+        answer = ""
+    return
     
 #-------------------------------------------------------------------------------
 # Main
 #-------------------------------------------------------------------------------
 if __name__ == "__main__":
-    print(_("====== Prime number functions ======"))
-    print(_("Last stored prime:"), pz.primes[-1], "(" + str(pz.oldlen) + ")")
+    textlines = (_("1: prime factors"),
+                 _("2: next prime number"),
+                 _("3: next prime twin"),
+                 _("4: count prime numbers"),
+                 _("5: count prime number twins"),
+                 _("q: quit"))
+    print(_("Last stored prime: %s (%s entries)") % (pz.primes[-1], pz.oldlen))
     answer = ""
     zahl = 0
     while answer not in ('q', "1", "2", "3"):
-        try:
-            print(_("1 = prime factors, 2 = next prime, 3 = next prime twin, q = quit"), end = ": ")
-            answer = lies()
-            if answer == "q": break
-            if answer == "1":
-                zahl = factors(zahl)
-            elif answer == "2":
-                zahl = nextprime(zahl)
-            else:
-                zahl = nexttwin(zahl)
-            answer = ""
-        except:
-            break
+        print(_("====== Prime number functions ======"))
+        for t in textlines:
+            print("\t", t)
+        print("> ", end = "")
+        answer = lies()
+        if answer == "q": break
+        if answer == "1":
+            zahl = factors(zahl)
+        elif answer == "2":
+            zahl = nextprime(zahl)
+        elif answer == "3":
+            zahl = nexttwin(zahl)
+        elif answer == "4":
+            prevprimes(zahl)
+        elif answer == "5":
+            prevtwins(zahl)
+        answer = ""

@@ -3,7 +3,7 @@ Some demo prime number methods using elementary pure Python.
 ## Contains              
 * **primzahl.py:** A cli demo script to invoke prime number methods and display their results. These function are prime factorization and calculating a number's subsequent prime or prime twin. Whenever possible, just hitting ENTER uses last function's output as input. So ENTER will continue to show primes (prime twins) in ascending order.
 
-* **primes.py:** Contains class definition for prime number calculations. Can be used independently from the rest of the other files. Loading stored, previously calculated prime numbers is done during import of the file. So the primes array is available on a class basis, i.e. across all created objects. Updating and saving this array will be done by all objects independently thus making results available to all objects. There is a built-in limit of how many primes will be saved to disk. This limit can be overwritten during object creation.
+* **primes.py:** Contains class definition for prime number calculations. Can be used independently from the rest of the other files. Loading stored, previously calculated prime numbers is done during import of the file. So the primes array is available on a class basis, i.e. across all created objects. Updating and saving this array will be done by all objects independently thus making results available to all objects. There is a built-in limit on the largest prime saved to disk. This limit can be overwritten during object creation.
 
 * **primzahl.json:** Ddefines message translations from English to another language (optional) for the cli script **primzahl.py**. If missing, English will be used.
 
@@ -11,14 +11,20 @@ Some demo prime number methods using elementary pure Python.
 
 ## Features
 * Perform prime factorization of an integer. Returns a list of pairs `[p, e]`, where `p` is a prime and `e` its exponent.
-* return the smallest **prime** greater than a provided integer.
-* return the smallest **prime twin** greater than a provided number. 
+* return the smallest **prime** greater than a given integer.
+* return the smallest **prime twin** greater than a given number. 
+* return **count of primes** less or equal a given number (Pi function). 
+* return **count of prime twins** less or equal a given number. 
 * automatically stores new calculated prime numbers in an `array.array` of format "L" (unsigned long).
 * automatically saves the prime number array in a zip file, if new primes have been created in the
   current session.
 
 ## Dependencies
-Runs with Python 2 or 3. When **switching back from Python 3** to Python 2 an eventually existing primenumbers.zip file must be deleted first, because Python 2 does not support compression LZMA (which is automatically used if Python 3).
+Runs with Python 2 or 3.
+
+When **switching back from Python 3** to Python 2 an eventually existing primenumbers.zip file must be deleted first, because Python 2 does not support compression LZMA (which is automatically used if Python 3).
+
+When switching from Python 2 to Python 3, the next save of prime numbers will automatically use LZMA compression.
 
 ## Example Session
 

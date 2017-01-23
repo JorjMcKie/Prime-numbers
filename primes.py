@@ -50,7 +50,7 @@ class Primes():
     def __del__(self):
         if self.oldlen >= len(self.primes):
             return
-        if len(self.primes) > self.store_limit:
+        if self.primes[-1] > self.store_limit:
             return
         with zipfile.ZipFile(self._primezip, "w", self._ziplevel) as mzip:
             mzip.writestr(self._primedata, self.primes.tostring(), self._ziplevel)
@@ -74,6 +74,7 @@ class Primes():
         return x
         
     def nextprime(self, zahl):
+        """Return the next prime following a provided integer."""
         if type(zahl) is not int:
             raise ValueError("arg must be integer")
         p = zahl
@@ -86,6 +87,7 @@ class Primes():
                 return p
         
     def nexttwin(self, zahl):
+        """Return the next prime twin following a provided integer."""
         if type(zahl) is not int:
             raise ValueError("arg must be integer")
         start_here = 1
@@ -99,3 +101,28 @@ class Primes():
             start_here = len(self.primes) - 1
             p += 1000        # one more loop should be sufficient with this ...
             self._enlarge(p)
+
+    def prev_twins(self, zahl):
+        """Return the the number of prime twins less or equal a givien number."""
+        p = zahl
+        while zahl > self.primes[-1]:      # larger than what we have so far?
+            p += 1000                      # should be enough to have just 1 loop
+            self._enlarge(p)
+        j = 0
+        for i in range(len(self.primes)-1):
+            if self.primes[i + 1] > zahl:
+                break
+            if self.primes[i] == self.primes[i + 1] - 2:
+                j += 1
+        return j
+
+    def prev_primes(self, zahl):
+        """Return the the number of primes less or equal a givien number."""
+        p = zahl
+        while zahl > self.primes[-1]:      # larger than what we have so far?
+            p += 1000                      # should be enough to have just 1 loop
+            self._enlarge(p)
+        for i in range(len(self.primes)):
+            if self.primes[i] > zahl:
+                break
+        return i
