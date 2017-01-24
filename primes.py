@@ -32,18 +32,52 @@ class Primes():
             
     def _enlarge(self, zahl):
         """Extend the primes array up to provided parameter."""
+        def mrtest(n):
+            def mrt(n, a):    
+                n1 = n - 1
+                d = n1 >> 1
+                j = 1
+                while (d & 1) == 0:
+                    d >>= 1
+                    j += 1
+                t = a
+                p = a
+                
+                while d:  # square and multiply: a^d mod n
+                    d >>= 1
+                    p = p*p % n
+                    if d & 1:
+                        t = t*p % n
+            
+                if t == 1 or t == n1:
+                    return True   # n ist wahrscheinlich prim
+                   
+                for k in range(1, j):
+                    t = t*t % n
+                    if t == n1: return True
+                    if t <= 1: break
+            
+                return False      # n ist nicht prim
+        
+            # n < 1.373.653 => alist = {2, 3}
+            # n < 9.080.191 => alist = {31, 73}
+            # n < 4.759.123.141 => alist = {2, 7, 61}
+            if n < 1373653:
+                alist = (2, 3)
+            elif n < 9080191:
+                alist = (31, 73)
+            else:
+                alist = (2, 7, 61)
+        
+            for a in alist:
+                if not mrt(n, a):
+                    return False
+            return True
+
         check = self.primes[-1]        # last stored prime
         while check <= zahl:
             check += 2                 # stick with odd numbers
-            i = 1                      # forget the 2
-            checksq = sqrt(check)
-            newprime = True
-            while self.primes[i] <= checksq:
-                if check % self.primes[i] == 0:
-                    newprime = False
-                    break
-                i += 1
-            if newprime:
+            if mrtest(check):
                 self.primes.append(check)
         return
 
@@ -75,8 +109,6 @@ class Primes():
         
     def nextprime(self, zahl):
         """Return the next prime following a provided integer."""
-        if type(zahl) is not int:
-            raise ValueError("arg must be integer")
         p = zahl
         while zahl > self.primes[-1]:      # larger than what we have so far?
             p += 1000                      # should be enough to have just 1 loop
@@ -88,8 +120,6 @@ class Primes():
         
     def nexttwin(self, zahl):
         """Return the next prime twin following a provided integer."""
-        if type(zahl) is not int:
-            raise ValueError("arg must be integer")
         start_here = 1
         p = zahl
         while 1:   # look several times if next twin not within know primes
@@ -103,7 +133,7 @@ class Primes():
             self._enlarge(p)
 
     def prev_twins(self, zahl):
-        """Return the the number of prime twins less or equal a givien number."""
+        """Return the number of prime twins less or equal a given number."""
         p = zahl
         while zahl > self.primes[-1]:      # larger than what we have so far?
             p += 1000                      # should be enough to have just 1 loop
@@ -117,7 +147,7 @@ class Primes():
         return j
 
     def prev_primes(self, zahl):
-        """Return the the number of primes less or equal a givien number."""
+        """Return the number of primes less or equal a given number."""
         p = zahl
         while zahl > self.primes[-1]:      # larger than what we have so far?
             p += 1000                      # should be enough to have just 1 loop

@@ -3,11 +3,11 @@ Some demo prime number methods using elementary pure Python.
 ## Contains              
 * **primzahl.py:** A cli demo script to invoke prime number methods and display their results. These function are prime factorization and calculating a number's subsequent prime or prime twin. Whenever possible, just hitting ENTER uses last function's output as input. So ENTER will continue to show primes (prime twins) in ascending order.
 
-* **primes.py:** Contains class definition for prime number calculations. Can be used independently from the rest of the other files. Loading stored, previously calculated prime numbers is done during import of the file. So the primes array is available on a class basis, i.e. across all created objects. Updating and saving this array will be done by all objects independently thus making results available to all objects. There is a built-in limit on the largest prime saved to disk. This limit can be overwritten during object creation.
+* **primes.py:** Contains class definition for prime number calculations. Can be used independently from the rest of the other files. Loading stored, previously calculated prime numbers is done during import of the file. So the primes array is available on a class basis, i.e. across all created objects. Updating and saving this array will be done by all objects independently thus making results available to all objects. There is a built-in limit on the largest prime array size saved to disk (currently prime numbers cannot exceed 5 million). This limit can be overwritten during object creation. When new primes must be claculated, the **deterministic** version of the **Miller-Rabin-Test** is used.
 
 * **primzahl.json:** Ddefines message translations from English to another language (optional) for the cli script **primzahl.py**. If missing, English will be used.
 
-* **primenumbers.zip:** contains prime numbers until about one million (optional). To be placed in the user's home directory. The actual prime number data in this file is LZMA-compressed (Python 3, or DEFLATEd in Python 2) and only occupies 58 KB. Will be extended automatically based on highest prime number used in a session. Will be created automatically if missing. During a session, these data serve as a cache to keep prime number calculations (done with the traditional sieve of Eratosthenes) to a minimum. User-available methods therefore only use standard Python array lookup functions to perform their tasks.
+* **primenumbers.zip:** contains prime numbers until about one million (optional). To be placed in the user's home directory. The actual prime number data in this file is LZMA-compressed (Python 3, or DEFLATEd in Python 2) and only occupies 58 KB. Will be extended automatically based on highest prime number used in a session. Will be created automatically if missing. During a session, these data serve as a cache to keep calculations of new prime number to a minimum. User-available methods therefore only use standard Python array lookup functions to perform their tasks.
 
 ## Features
 * Perform prime factorization of an integer. Returns a list of pairs `[p, e]`, where `p` is a prime and `e` its exponent.
@@ -25,6 +25,9 @@ Runs with Python 2 or 3.
 When **switching back from Python 3** to Python 2 an eventually existing primenumbers.zip file must be deleted first, because Python 2 does not support compression LZMA (which is automatically used if Python 3).
 
 When switching from Python 2 to Python 3, the next save of prime numbers will automatically use LZMA compression.
+
+## Changes
+* Use the deterministic version of the **Miller-Rabin-Test** for primality. This is about **33% more efficient** than Eratosthenes in our context.
 
 ## Example Session
 
