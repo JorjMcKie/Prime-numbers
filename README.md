@@ -31,37 +31,82 @@ When switching from Python 2 to Python 3, the next save of prime numbers will au
 
 ## Example Session
 
-
-    $ python primzahl.py
-    primzahl.json translation does not exist
+    Last stored prime: 1001003 (78574 entries)
     ====== Prime number functions ======
-    Last stored prime: 1000999 (78573)
-    1 = prime factors, 2 = next prime, 3 = next prime twin, q = quit: 1
+         1: prime factors
+         2: next prime number
+         3: next prime twin
+         4: count prime numbers
+         5: count prime number twins
+         q: quit
+    > 1
     === Find prime factors ===
     Enter a number or 'q': 478523
     Factors: [[478523, 1]]
-    
+
     Enter a number or 'q': 397397
     Factors: [[7, 1], [11, 1], [13, 1], [397, 1]]
-    
+
     Enter a number or 'q': q
-    1 = prime factors, 2 = next prime, 3 = next prime twin, q = quit: 2
+    ====== Prime number functions ======
+         1: prime factors
+         2: next prime number
+         3: next prime twin
+         4: count prime numbers
+         5: count prime number twins
+         q: quit
+    > 2
     === Find the next prime ===
     ENTER, a number or 'q':
     Next prime: 397427
-    
+
     ENTER, a number or 'q':
     Next prime: 397429
-    
+
     ENTER, a number or 'q': q
-    1 = prime factors, 2 = next prime, 3 = next prime twin, q = quit: 3
+    ====== Prime number functions ======
+         1: prime factors
+         2: next prime number
+         3: next prime twin
+         4: count prime numbers
+         5: count prime number twins
+         q: quit
+    > 3
     === Find the next prime twin ===
     ENTER, a number or 'q': 999999
     Next prime twin: (1000037, 1000039)
-    
+
     ENTER, a number or 'q': q
-    1 = prime factors, 2 = next prime, 3 = next prime twin, q = quit: q
-    
+    ====== Prime number functions ======
+         1: prime factors
+         2: next prime number
+         3: next prime twin
+         4: count prime numbers
+         5: count prime number twins
+         q: quit
+    > 4
+    === Count previous primes ===
+    Enter a number or 'q': 999999
+    78498
+    Enter a number or 'q': q
+    ====== Prime number functions ======
+         1: prime factors
+         2: next prime number
+         3: next prime twin
+         4: count prime numbers
+         5: count prime number twins
+         q: quit
+    > 5
+    === Count previous prime twins ===
+    Enter a number or 'q': 999999
+    8169
+    Enter a number or 'q': q
+    ====== Prime number functions ======
+         1: prime factors
+         2: next prime number
+         3: next prime twin
+         4: count prime numbers
+         5: count prime number twins
+         q: quit
+    > q
     $
-
-
