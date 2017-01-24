@@ -110,7 +110,7 @@ class Primes():
     def nextprime(self, zahl):
         """Return the next prime following a provided integer."""
         p = zahl
-        while zahl > self.primes[-1]:      # larger than what we have so far?
+        while zahl >= self.primes[-1]:      # larger than what we have so far?
             p += 1000                      # should be enough to have just 1 loop
             self._enlarge(p)
             
