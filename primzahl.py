@@ -62,13 +62,12 @@ def factors(zahl):
     while answer != "q":
         print(_("Enter a number or 'q'"), end = ": ")
         answer = lies()
-        if answer == "q":
-            break
+        if answer == "q": break
         try:
-            zahl = int(float(answer))
+            zahl = int(answer)
             print(_("Factors:"), pz.factors(zahl), "\n")
-        except:
-            continue
+        except ValueError:
+            pass
         answer = ""
     return zahl
 
@@ -81,13 +80,10 @@ def nextprime(zahl):
         answer = lies()
         if answer == "q": break
         try:
-            if answer != "":
-                zahl = pz.nextprime(int(float(answer)))
-            else:
-                zahl = pz.nextprime(zahl)
-            print(_("Next prime:"), zahl, "\n")
-        except:
-            continue
+            zahl = pz.nextprime(float(answer))
+        except ValueError:
+            zahl = pz.nextprime(zahl + 1)
+        print(_("Next prime:"), zahl, "\n")
         answer = ""
     return zahl
 
@@ -99,16 +95,16 @@ def nexttwin(zahl):
         print(_("ENTER, a number or 'q'"), end = ": ")
         answer = lies()
         if answer == "q": break
-        if answer != "":
-            p1, p2 = pz.nexttwin(int(float(answer)))
-        else:
+        try:
+            p1, p2 = pz.nexttwin(float(answer))
+        except ValueError:
             p1, p2 = pz.nexttwin(zahl)
         print(_("Next prime twin:"), (p1, p2), "\n")
         zahl = p2
         answer = ""
     return zahl
     
-def prevprimes(zahl):
+def prevprimes():
     """Return number of primes less or equal a number."""
     print(_("=== Count previous primes ==="))
     answer = ""
@@ -116,12 +112,14 @@ def prevprimes(zahl):
         print(_("Enter a number or 'q'"), end = ": ")
         answer = lies()
         if answer == "q": break
-        if answer != "":
+        try:
             print(pz.prev_primes(float(answer)))
+        except ValueError:
+            pass
         answer = ""
     return
     
-def prevtwins(zahl):
+def prevtwins():
     """Return the smallest prime twin following a given number."""
     print(_("=== Count previous prime twins ==="))
     answer = ""
@@ -129,8 +127,10 @@ def prevtwins(zahl):
         print(_("Enter a number or 'q'"), end = ": ")
         answer = lies()
         if answer == "q": break
-        if answer != "":
+        try:
             print(pz.prev_twins(float(answer)))
+        except ValueError:
+            pass
         answer = ""
     return
     
@@ -147,7 +147,7 @@ if __name__ == "__main__":
     print(_("Last stored prime: %s (%s entries)") % (pz.primes[-1], pz.oldlen))
     answer = ""
     zahl = 0
-    while answer not in ('q', "1", "2", "3"):
+    while answer != "q":
         print(_("====== Prime number functions ======"))
         for t in textlines:
             print("\t", t)
@@ -161,7 +161,7 @@ if __name__ == "__main__":
         elif answer == "3":
             zahl = nexttwin(zahl)
         elif answer == "4":
-            prevprimes(zahl)
+            prevprimes()
         elif answer == "5":
-            prevtwins(zahl)
+            prevtwins()
         answer = ""

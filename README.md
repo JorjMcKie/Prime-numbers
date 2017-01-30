@@ -10,7 +10,7 @@ Some demo prime number methods using elementary pure Python.
 * **primenumbers.zip:** an optional file containing prime numbers until about one million. To be placed in the user's home directory. The actual prime number data in this file is LZMA-compressed (Python 3, or DEFLATEd in Python 2) and only occupies 58 KB. Will be extended automatically, based on highest prime number used in a session. Will be created automatically in the user's home directory if missing. During a session, these data serve as a cache to keep calculations of new prime number to a minimum.
 
 ## Features
-* Perform prime factorization of an integer. Returns a list of pairs `[p, e]`, where `p` is a prime and `e` its exponent.
+* Perform prime factorization of an integer. Returns a list of pairs `[p, e]`, where `p` is a prime and `e` its exponent. Primes obviously only contain one such pair.
 * Return the smallest **prime** greater than a given number.
 * Return the smallest **prime twin** greater than a given number. 
 * Return **count of primes** less or equal a given number (so-called Pi function). 
