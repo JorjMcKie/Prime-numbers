@@ -2,6 +2,7 @@
 import os, sys
 import array
 import zipfile
+import bisect
 
 class Primes():
     _appdata = os.path.expanduser("~")
@@ -60,7 +61,7 @@ class Primes():
             #-----------------------------------------------------------------
         
             # testing the following a-values suffices for a determninistic test,
-            # if checked numbers are <= 2**32 (which is our case)
+            # if checked number n <= 2**32
             # see https://de.wikipedia.org/wiki/Miller-Rabin-Test
             # n <     1.373.653 => alist = {2, 3}
             # n <     9.080.191 => alist = {31, 73}
@@ -88,10 +89,13 @@ class Primes():
 # Save to disk (eventually) when object gets deleted
 #==============================================================================
     def __del__(self):
-        if self.oldlen >= len(self.primes):      # did not do beyond old limit
+        if self.oldlen >= len(self.primes):      # did not go beyond old limit
             return
         if self.primes[-1] > self.store_limit:   # exceeds size limit
             return
+        self.save()
+        
+    def save(self):
         with zipfile.ZipFile(self._primezip, "w", self._ziplevel) as mzip:
             mzip.writestr(self._primedata, self.primes.tostring(), self._ziplevel)
         mzip.close()
@@ -100,38 +104,24 @@ class Primes():
 # Binary search for index of next prime
 #==============================================================================
     def _nxt_prime_idx(self, zahl):
-        """Perform a binary search for the smallest prime >= zahl.
+        """Binary search for the smallest index i with zahl <= primes[i]
         """
         p = zahl
         while zahl >= self.primes[-1]: # larger than what we have so far?
-            p += 1000                  # should be enough to have just 1 loop
+            p += 1000                  # big enough for max. one loop
             self._enlarge(p)
-        
-        if zahl <= 3500:               # no bin search if that small ...
-            for i in range(len(self.primes)):
-                if zahl <= self.primes[i]:
-                    return i
-        anf = 0
-        end = len(self.primes)
-        i = int((end - anf)/2)         # middle index
-        while (end - anf) > 1:         # while intervall large enough ...
-            if self.primes[i] < zahl:  # large than middle value
-                anf = i                # take upper half
-            else:
-                end = i                # take lower half
-            i = anf + int((end - anf)/2)    # new middle index
-        return i+1
+        return bisect.bisect_left(self.primes, zahl)
         
 #==============================================================================
 # Calculate prime factors
 #==============================================================================
     def factors(self, zahl):
-        """Return the prime factors of a positive integer as a list of lists. Each list consists of a prime factor and its exponent. A number obviously is prime, if this list has a length of one.
+        """Return the prime factors of an integer as a list of lists. Each list consists of a prime factor and its exponent.
         """
         if (type(zahl) is not int) or (zahl < 1):
             raise ValueError("arg must be integer > 0")
-        if zahl > self.primes[-1]:
-            self._enlarge(zahl)
+        if zahl == self.nextprime(zahl):
+            return [[zahl, 1]]
         x = []
         for n in self.primes:
             if n > zahl: break
@@ -148,17 +138,15 @@ class Primes():
 # Deliver next prime
 #==============================================================================
     def nextprime(self, zahl):
-        """Return the smallest prime not less than the provided integer or float.
-        """
-        return self.primes[self._nxt_prime_idx(zahl)]           
+        """Return the next prime following a provided number."""
+        return self.primes[self._nxt_prime_idx(zahl)]
         
 #==============================================================================
 # Deliver next prime twin
 #==============================================================================
     def nexttwin(self, zahl):
-        """Return the smallest prime twin (p, p+2) with p not less than the provided integer or float.
-        """
-        start_here = self._nxt_prime_idx(zahl)   # prime twin must be larger ...
+        """Return the first prime twin following a provided number."""
+        start_here = max(self._nxt_prime_idx(zahl), 1)   # prime twin must be GE ...
         p = zahl
         while 1:   # look several times if next twin not within know primes
             for i in range(start_here, len(self.primes)):
@@ -167,18 +155,14 @@ class Primes():
                 if zahl <= p1 and p1 + 2 == p2:
                     return (p1, p2)
             start_here = len(self.primes) - 1
-            p += 1000        # 1 round should include more twins already
+            p += 1000        # big enough for max. one loop
             self._enlarge(p)
 
-#==============================================================================
-# Count previous prime twins
-#==============================================================================
     def prev_twins(self, zahl):
-        """Return the number of prime twins (p, p+2) where p+2 is not greater than the provided integer or float.
-        """
+        """Return the number of prime twins less or equal a given number."""
         p = zahl
         while zahl > self.primes[-1]:      # larger than what we have so far?
-            p += 1000                      # 1 loop should be enough
+            p += 1000                      # big enough for max. one loop
             self._enlarge(p)
         j = 0
         for i in range(len(self.primes)-1):
@@ -188,13 +172,10 @@ class Primes():
                 j += 1
         return j
 
-#==============================================================================
-# count previous primes
-#==============================================================================
     def prev_primes(self, zahl):
-        """Return the number of primes which are not greater than the provided integer or float.
-        """
-        i = self._nxt_prime_idx(zahl)
-        if self.primes[i] == zahl:
-            i += 1
-        return i
+        """Return the number of primes less or equal a given number."""
+        p = zahl
+        while zahl > self.primes[-1]:      # larger than what we have so far?
+            p += 1000                      # big enough for max. one loop
+            self._enlarge(p)
+        return bisect.bisect_right(pz.primes, zahl)

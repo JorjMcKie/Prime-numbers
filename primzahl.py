@@ -3,7 +3,7 @@
 Created on Thu Jan 19 07:00:00 2017
 
 @author: Jorj McKie
-Copyright (c) 2015 Jorj X. McKie
+Copyright (c) 2017 Jorj X. McKie
 
 The license of this program is governed by the MIT LICENSE.
 
@@ -21,8 +21,10 @@ primenumbers.zip  file containing prime numbers until about one million (optiona
 Features
 ---------
 * Perform prime factorizations of any integer. Feedback is a list of pairs [p, e] where p is a       prime factor and e its exponent.abs
-* return the smallest prime greater than a provided integer.
-* return the smallest prime twin grater than a provided number. 
+* return the smallest prime not smaller than a given number.
+* return the smallest prime twin not smaller than a given number.
+* return the count of primes up to a given number.
+* return the count of prime twins up to a given number. 
 * automatically stores new calculated prime numbers in an array.array of format "L" (unsigned long)
 * automatically save the prime number array in a zip file, if new primes have been created in the
   current session.
@@ -36,14 +38,16 @@ from __future__ import print_function
 import sys, os
 from primes import Primes
 import json
-xlatefn = __file__[:-2] + "json"
-if os.path.exists(xlatefn):
-    xlate = json.loads(open(xlatefn).read())
-    def _(s):
-        if s in xlate.keys():
-            return xlate[s]
-        else:
-            return s
+if len(sys.argv) == 2:
+    suffix = sys.argv[1]
+    xlatefn = __file__[:-2] + suffix
+    if os.path.exists(xlatefn):
+        xlate = json.loads(open(xlatefn).read())
+        def _(s):
+            if s in xlate.keys():
+                return xlate[s]
+            else:
+                return s
 else:
     def _(s):
         return s
@@ -144,7 +148,7 @@ if __name__ == "__main__":
                  _("4: count prime numbers"),
                  _("5: count prime number twins"),
                  _("q: quit"))
-    print(_("Last stored prime: %s (%s entries)") % (pz.primes[-1], pz.oldlen))
+    print(_("Last prime number in store: %s (%s entries)") % (pz.primes[-1], pz.oldlen))
     answer = ""
     zahl = 0
     while answer != "q":
