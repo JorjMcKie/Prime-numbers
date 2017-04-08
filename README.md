@@ -3,9 +3,9 @@ Some demo prime number methods using elementary pure Python.
 ## Contains              
 * **primzahl.py:** A CLI demo script to serve as a frontend for invoking prime number methods and displaying their results. These functions are prime factorization,looking up the next prime (twin) and counting primes and prime twins below a certain number. Whenever possible, just hitting ENTER uses last function's output as input. So for example, ENTER will continue to show primes (or prime twins respectively) in ascending order.
 
-* **primes.py:** Contains the class definition for all prime number calculations. Can be used independently from the other files. Loading stored, previously calculated prime numbers is done during import - not during object creation. The `__del__` method of this class automatically performs a save to disk, if new prime numbers have been calculated. There is a built-in limit on the largest prime saved to disk, currently 5 million. This limit can be overwritten during object creation, and of course the definition can be updated, too. Prime numbers are stored as 32 bit integers ("unsigned long", using the `array` standard Python module, not a simple list), so there is an absolute upper limit of about 4.3 billion for the largest storable prime number. When new primes must be claculated, a **deterministic** version of the **Miller-Rabin-Test** is used.
+* **primes.py:** Contains the class definition for all prime number calculations. Can be used independently from the other files. Loading stored, previously calculated prime numbers is done during import - not during object creation. The `__del__` method of this class automatically performs a save to disk, if new prime numbers have been calculated. There is a built-in limit on the largest prime saved to disk, currently 5 million. This limit can be overwritten during object creation, and of course the definition can be updated, too. Prime numbers are stored as 32 bit integers ("unsigned long", using the `array` standard Python module, not a simple list), so there is an absolute upper limit of about 4.3 billion for the largest usable prime number. When new primes must be claculated, a **deterministic** version of the **Miller-Rabin-Test** is used.
 
-* **primzahl.de, primzahl.es:** optional files defining message translations from English to German and Spanish, respectively. The CLI script **primzahl.py** will check its first invocation parameter for an appropriate file extension. If missing, English will be used.
+* **primzahl.de, primzahl.es:** optional files defining message translations from English to German and Spanish, respectively. The CLI script **primzahl.py** will check its first invocation parameter for an appropriate file extension - "de"and "es" in these cases.  In order to support your favorite language, create a **primzahl.xx** file and invoke the script with the parameter **xx**. If missing, English will be used.
 
 * **primenumbers.zip:** an optional file containing prime numbers until about one million. To be placed in the user's home directory. The actual prime number data in this file is LZMA-compressed (Python 3, or DEFLATEd in Python 2) and only occupies 58 KB. Will be extended automatically, based on highest prime number used in a session. Will be created automatically in the user's home directory if missing. During a session, these data serve as a cache to keep calculations of new prime number to a minimum.
 
@@ -28,7 +28,7 @@ No issues exist, when switching from Python 2 to Python 3. The next prime number
 ## Changes
 * Use the deterministic version of the **Miller-Rabin-Test** for primality. This is about **30 - 50% more efficient** than Eratosthenes in our context.
 * Use of binary search module `bisect` when looking up the index of a prime.
-* Parameterize message translations for CLI script.
+* Parameterize message translations in the CLI script.
 
 ## Example Session
 
