@@ -1,6 +1,6 @@
 # -*- coding: latin-1 -*-
-#cython: language_level=2, boundscheck=False
-import os, sys
+#cython: boundscheck=False
+import os
 import array
 import zipfile
 import bisect
@@ -11,7 +11,7 @@ class Primes():
     _primezip  = os.path.join(_appdata, "primenumbers.zip")
     primes = array.array("L")
     store_limit = 5*10**6           # largest prime we want to store
-    if sys.version_info[0] < 3:
+    if str is bytes:
         _ziplevel = zipfile.ZIP_DEFLATED
     else:
         _ziplevel = zipfile.ZIP_LZMA

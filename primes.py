@@ -1,5 +1,5 @@
 # -*- coding: latin-1 -*-
-import os, sys
+import os
 import array
 import zipfile
 import bisect
@@ -10,7 +10,7 @@ class Primes():
     _primezip  = os.path.join(_appdata, "primenumbers.zip")
     primes = array.array("L")
     store_limit = 5*10**6           # largest prime we want to store
-    if sys.version_info[0] < 3:
+    if str is bytes:
         _ziplevel = zipfile.ZIP_DEFLATED
     else:
         _ziplevel = zipfile.ZIP_LZMA
@@ -178,4 +178,4 @@ class Primes():
         while zahl > self.primes[-1]:      # larger than what we have so far?
             p += 1000                      # big enough for max. one loop
             self._enlarge(p)
-        return bisect.bisect_right(pz.primes, zahl)
+        return bisect.bisect_right(self.primes, zahl)

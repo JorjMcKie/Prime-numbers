@@ -52,7 +52,7 @@ else:
     def _(s):
         return s
 
-if sys.version_info[0] < 3:
+if str is bytes:
     lies = raw_input
 else:
     lies = input
