@@ -34,23 +34,28 @@ Dependencies:
 Runs with Python 2 or 3. When switching back from Python 3 to Python 2 an existing primzahl.zip file must be deleted first, because Python 2 does not support zipfile compression LZMA (which is automatically used if Python 3).
 
 """
-from __future__ import print_function
 import sys, os
 from primes import Primes
 import json
+
 if len(sys.argv) == 2:
     suffix = sys.argv[1]
     xlatefn = __file__[:-2] + suffix
     if os.path.exists(xlatefn):
         xlate = json.loads(open(xlatefn).read())
+
         def _(s):
             if s in xlate.keys():
                 return xlate[s]
             else:
                 return s
+
+
 else:
+
     def _(s):
         return s
+
 
 if str is bytes:
     lies = raw_input
@@ -59,14 +64,16 @@ else:
 
 pz = Primes()
 
+
 def factors(zahl):
     """Return the prime factors of a given positive integer."""
     print(_("=== Find prime factors ==="))
     answer = ""
     while answer != "q":
-        print(_("Enter a number or 'q'"), end = ": ")
+        print(_("Enter a number or 'q'"), end=": ")
         answer = lies()
-        if answer == "q": break
+        if answer == "q":
+            break
         try:
             zahl = int(answer)
             print(_("Factors:"), pz.factors(zahl), "\n")
@@ -75,14 +82,16 @@ def factors(zahl):
         answer = ""
     return zahl
 
+
 def nextprime(zahl):
     """Return the smallest prime following a given number."""
     print(_("=== Find the next prime ==="))
     answer = ""
-    while answer != 'q':
-        print(_("ENTER, a number or 'q'"), end = ": ")
+    while answer != "q":
+        print(_("ENTER, a number or 'q'"), end=": ")
         answer = lies()
-        if answer == "q": break
+        if answer == "q":
+            break
         try:
             zahl = pz.nextprime(float(answer))
         except ValueError:
@@ -91,14 +100,16 @@ def nextprime(zahl):
         answer = ""
     return zahl
 
+
 def nexttwin(zahl):
     """Return the smallest prime twin following a given number."""
     print(_("=== Find the next prime twin ==="))
     answer = ""
-    while answer != 'q':
-        print(_("ENTER, a number or 'q'"), end = ": ")
+    while answer != "q":
+        print(_("ENTER, a number or 'q'"), end=": ")
         answer = lies()
-        if answer == "q": break
+        if answer == "q":
+            break
         try:
             p1, p2 = pz.nexttwin(float(answer))
         except ValueError:
@@ -107,47 +118,54 @@ def nexttwin(zahl):
         zahl = p2
         answer = ""
     return zahl
-    
+
+
 def prevprimes():
     """Return number of primes less or equal a number."""
     print(_("=== Count previous primes ==="))
     answer = ""
-    while answer != 'q':
-        print(_("Enter a number or 'q'"), end = ": ")
+    while answer != "q":
+        print(_("Enter a number or 'q'"), end=": ")
         answer = lies()
-        if answer == "q": break
+        if answer == "q":
+            break
         try:
             print(pz.prev_primes(float(answer)))
         except ValueError:
             pass
         answer = ""
     return
-    
+
+
 def prevtwins():
     """Return the smallest prime twin following a given number."""
     print(_("=== Count previous prime twins ==="))
     answer = ""
-    while answer != 'q':
-        print(_("Enter a number or 'q'"), end = ": ")
+    while answer != "q":
+        print(_("Enter a number or 'q'"), end=": ")
         answer = lies()
-        if answer == "q": break
+        if answer == "q":
+            break
         try:
             print(pz.prev_twins(float(answer)))
         except ValueError:
             pass
         answer = ""
     return
-    
-#-------------------------------------------------------------------------------
+
+
+# -------------------------------------------------------------------------------
 # Main
-#-------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------
 if __name__ == "__main__":
-    textlines = (_("1: prime factors"),
-                 _("2: next prime number"),
-                 _("3: next prime twin"),
-                 _("4: count prime numbers"),
-                 _("5: count prime number twins"),
-                 _("q: quit"))
+    textlines = (
+        _("1: prime factors"),
+        _("2: next prime number"),
+        _("3: next prime twin"),
+        _("4: count prime numbers"),
+        _("5: count prime number twins"),
+        _("q: quit"),
+    )
     print(_("Last prime number in store: %s (%s entries)") % (pz.primes[-1], pz.oldlen))
     answer = ""
     zahl = 0
@@ -155,9 +173,10 @@ if __name__ == "__main__":
         print(_("====== Prime number functions ======"))
         for t in textlines:
             print("\t", t)
-        print("> ", end = "")
+        print("> ", end="")
         answer = lies()
-        if answer == "q": break
+        if answer == "q":
+            break
         if answer == "1":
             zahl = factors(zahl)
         elif answer == "2":
