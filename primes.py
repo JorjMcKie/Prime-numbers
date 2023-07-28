@@ -5,20 +5,17 @@ import zipfile
 import bisect
 
 
-class Primes(obj):
+class Primes(object):
     _appdata = os.path.expanduser("~")
-    _primedata = "primenumbers.data"
+    _PRIMEDATA = "primenumbers.data"
     _primezip = os.path.join(_appdata, "primenumbers.zip")
     primes = array.array("L")
-    store_limit = 5 * 10 ** 6  # largest prime we want to store
-    if str is bytes:
-        _ziplevel = zipfile.ZIP_DEFLATED
-    else:
-        _ziplevel = zipfile.ZIP_LZMA
+    STORE_LIMIT = 5 * 10 ** 6  # only primes less than this
+    _ziplevel = zipfile.ZIP_LZMA
 
     if os.path.exists(_primezip):
         mzip = zipfile.ZipFile(_primezip, "r")
-        pzin = mzip.read(_primedata)
+        pzin = mzip.read(_PRIMEDATA)
         primes.frombytes(pzin)
         mzip.close()
         del mzip, pzin
@@ -29,7 +26,7 @@ class Primes(obj):
     def __init__(self, max_primes=0):
         """Change maximum prime that can be stored to disk."""
         if max_primes > 0:
-            self.store_limit = max_primes
+            self.STORE_LIMIT = max_primes
 
     # ==============================================================================
     # Use Miller-Rabin-Test for primality checks
@@ -54,14 +51,14 @@ class Primes(obj):
                     if d & 1:
                         t = t * p % n
                 if t == 1 or t == n1:
-                    return True  # n ist wahrscheinlich prim
+                    return True  # n is probably prime
                 for k in range(1, j):
                     t = t * t % n
                     if t == n1:
                         return True
                     if t <= 1:
                         break
-                return False  # n ist nicht prim
+                return False  # n is not prime
 
             # -----------------------------------------------------------------
 
@@ -96,13 +93,13 @@ class Primes(obj):
     def __del__(self):
         if self.oldlen >= len(self.primes):  # did not go beyond old limit
             return
-        if self.primes[-1] > self.store_limit:  # exceeds size limit
+        if self.primes[-1] > self.STORE_LIMIT:  # exceeds size limit
             return
         self.save()
 
     def save(self):
         with zipfile.ZipFile(self._primezip, "w", self._ziplevel) as mzip:
-            mzip.writestr(self._primedata, self.primes.tostring(), self._ziplevel)
+            mzip.writestr(self._PRIMEDATA, self.primes.tostring(), self._ziplevel)
         mzip.close()
 
     # ==============================================================================
@@ -124,7 +121,7 @@ class Primes(obj):
         if (type(zahl) is not int) or (zahl < 1):
             raise ValueError("arg must be integer > 0")
         if zahl == self.nextprime(zahl):
-            return [[zahl, 1]]
+            return [(zahl, 1)]
         x = []
         for n in self.primes:
             if n > zahl:
@@ -136,7 +133,7 @@ class Primes(obj):
             while nz % n == 0:
                 nz = nz // n
                 i += 1
-            x.append([n, i])
+            x.append((n, i))
         return x
 
     # ==============================================================================
